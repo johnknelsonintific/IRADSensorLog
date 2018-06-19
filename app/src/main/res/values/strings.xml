@@ -1,0 +1,18 @@
+<resources>
+    <string name="app_name">IRAD Sensor Log</string>
+
+    <!-- Main Activity -->
+    <string name="start_logging">Start Logging</string>
+
+    <!-- Menu Items -->
+    <string name="action_settings">Settings</string>
+    <string name="action_view_logs">View Logs</string>
+
+    <!-- Postures -->
+    <string name="standing">Standing</string>
+    <string name="crouching">Crouching</string>
+    <string name="prone">Prone</string>
+
+
+
+</resources>

@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_margin="@dimen/fab_margin"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context="com.example.intific.iradsensorlog.MainActivity"
+    tools:showIn="@layout/activity_main">
+
+    <LinearLayout
+        android:id="@+id/log_params_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toTopOf="@+id/log_button">
+
+        <android.support.v7.widget.SwitchCompat
+            android:id="@+id/log_acc_switch"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Accelerometer (HW Based)" />
+
+        <android.support.v7.widget.SwitchCompat
+            android:id="@+id/log_gyro_switch"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Gyroscope (HW Based)" />
+
+        <android.support.v7.widget.SwitchCompat
+            android:id="@+id/log_orientation_switch"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Orientation (Inferred)" />
+
+        <android.support.v7.widget.SwitchCompat
+            android:id="@+id/log_grav_switch"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Gravity Sensor (Inferred)" />
+
+        <android.support.v7.widget.SwitchCompat
+            android:id="@+id/log_activity_switch"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Google Activity Recognition" />
+
+        <LinearLayout
+            android:id="@+id/activity_select_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toTopOf="@+id/log_button">
+
+            <RadioGroup xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+                <RadioButton android:id="@+id/radio_standing"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/standing"
+                    android:onClick="onPostureRadioButtonClicked"/>
+                <RadioButton android:id="@+id/radio_crouching"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/crouching"
+                    android:onClick="onPostureRadioButtonClicked"/>
+                <RadioButton android:id="@+id/radio_prone"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/prone"
+                    android:onClick="onPostureRadioButtonClicked"/>
+            </RadioGroup>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/log_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:text="@string/start_logging" />
+
+</android.support.constraint.ConstraintLayout>
