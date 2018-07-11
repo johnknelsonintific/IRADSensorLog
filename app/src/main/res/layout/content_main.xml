@@ -88,6 +88,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
+        android:text="@string/start_logging"
         tools:text="@string/start_logging" />
 
 </android.support.constraint.ConstraintLayout>

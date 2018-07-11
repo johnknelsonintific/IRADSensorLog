@@ -1,16 +1,25 @@
 package com.example.intific.iradsensorlog;
 
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Button;
 import android.widget.RadioButton;
 
-public class MainActivity extends AppCompatActivity {
+import com.example.intific.iradsensorlog.sensorlog.SensorLogger;
+import com.example.intific.iradsensorlog.sensorlog.SensorLoggerConfig;
+
+public class MainActivity extends AppCompatActivity implements SensorLogger.SensorLogListenerInterface {
+
+    // sensor logger
+    SensorLogger sensorLogger;
+    Boolean currentlyLogging = false;
+
+    // UI references
+    Button logButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -19,7 +28,27 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        // Instantiate sensor logger
+        SensorLoggerConfig sensorLoggerConfig = new SensorLoggerConfig(true);
+        sensorLogger = new SensorLogger(sensorLoggerConfig, this, this);
 
+        // Natively bind members to UI elements
+        logButton = findViewById(R.id.log_button);
+
+        // Define click behavior for UI
+        logButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(currentlyLogging){
+                    sensorLogger.stopLogger();
+                    logButton.setText(getString(R.string.start_logging));
+                } else {
+                    sensorLogger.startLogger();
+                    logButton.setText(R.string.stop_logging);
+                }
+                currentlyLogging = !currentlyLogging;// Turn logging on or off
+            }
+        });
     }
 
     @Override
@@ -61,5 +90,15 @@ public class MainActivity extends AppCompatActivity {
                     break;
 
         }
+    }
+
+    @Override
+    public void sensorLoggingStarted() {
+        //TODO Update the UI as needed
+    }
+
+    @Override
+    public void sensorLoggingEnded() {
+        //TODO Update the UI as needed when the logging is done
     }
 }

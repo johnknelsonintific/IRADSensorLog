@@ -3,6 +3,7 @@
 
     <!-- Main Activity -->
     <string name="start_logging">Start Logging</string>
+    <string name="stop_logging">Stop Logging</string>
 
     <!-- Menu Items -->
     <string name="action_settings">Settings</string>
