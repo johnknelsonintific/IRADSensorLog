@@ -54,6 +54,7 @@
             app:layout_constraintBottom_toTopOf="@+id/log_button">
 
             <RadioGroup xmlns:android="http://schemas.android.com/apk/res/android"
+                android:id="@+id/posture_radiogroup"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">

@@ -8,9 +8,14 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.RadioButton;
+import android.widget.RadioGroup;
 
 import com.example.intific.iradsensorlog.sensorlog.SensorLogger;
 import com.example.intific.iradsensorlog.sensorlog.SensorLoggerConfig;
+
+import static com.example.intific.iradsensorlog.model.postures.POSTURE_CROUCHING;
+import static com.example.intific.iradsensorlog.model.postures.POSTURE_PRONE;
+import static com.example.intific.iradsensorlog.model.postures.POSTURE_STANDING;
 
 public class MainActivity extends AppCompatActivity implements SensorLogger.SensorLogListenerInterface {
 
@@ -20,6 +25,7 @@ public class MainActivity extends AppCompatActivity implements SensorLogger.Sens
 
     // UI references
     Button logButton;
+    RadioGroup postureRadiogroup;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,6 +40,11 @@ public class MainActivity extends AppCompatActivity implements SensorLogger.Sens
 
         // Natively bind members to UI elements
         logButton = findViewById(R.id.log_button);
+        postureRadiogroup = findViewById(R.id.posture_radiogroup);
+
+        // Initialize the radio button and sensor logger
+        postureRadiogroup.check(R.id.radio_standing);
+        sensorLogger.setPosture(POSTURE_STANDING);
 
         // Define click behavior for UI
         logButton.setOnClickListener(new View.OnClickListener() {
@@ -81,12 +92,15 @@ public class MainActivity extends AppCompatActivity implements SensorLogger.Sens
         switch(view.getId()) {
             case R.id.radio_standing:
                 if (checked)
+                    sensorLogger.setPosture(POSTURE_STANDING);
                     break;
             case R.id.radio_crouching:
                 if (checked)
+                    sensorLogger.setPosture(POSTURE_CROUCHING);
                     break;
             case R.id.radio_prone:
                 if (checked)
+                    sensorLogger.setPosture(POSTURE_PRONE);
                     break;
 
         }

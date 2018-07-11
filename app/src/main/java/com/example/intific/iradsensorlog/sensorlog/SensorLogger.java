@@ -6,6 +6,8 @@ import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 
+import com.example.intific.iradsensorlog.googleactivityrecognition.GoogleActivityRecognition;
+
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -13,7 +15,7 @@ import java.util.TimerTask;
  * Created by John Nelson on 6/18/18.
  */
 
-public class SensorLogger implements SensorEventListener {
+public class SensorLogger implements SensorEventListener, GoogleActivityRecognition.GoogleActivityRecognizedListener {
     // Context
     Context context;
 
@@ -23,6 +25,9 @@ public class SensorLogger implements SensorEventListener {
     private Sensor rawAccelerometer;
     private Sensor rawGyroscope;
     private Sensor gameRotationSensor;// The game rotation is more accurate than geomagnetic, and we don't care about "north"
+
+    // Google acgtiviy recognition API class
+    GoogleActivityRecognition googleActivityRecognition;
 
     // Logging tools
     private SensorLoggerConfig sensorLoggerParameters;
@@ -51,14 +56,17 @@ public class SensorLogger implements SensorEventListener {
         this.rawGyroscope = mSensorManager.getDefaultSensor(Sensor.TYPE_GYROSCOPE);
         this.gameRotationSensor = mSensorManager.getDefaultSensor(Sensor.TYPE_GAME_ROTATION_VECTOR);
 
+        // Initialize our Google activity recognition API
+        this.googleActivityRecognition = new GoogleActivityRecognition(context, this);
+
         // Initialize the instance of sensor logs
         this.sensorLogInstance = new SensorLogInstance();
         this.currentSensorLogEntry = new SensorLogEntry();
-        logEntryTimer = new Timer();
     }
 
     public void startLogger(){
-        this.sensorLogListener = sensorLogListener;
+        // Reset log instance
+        sensorLogInstance = new SensorLogInstance();
 
         // Register for all interesting sensors we can get a hold of
         mSensorManager.registerListener(this, linearAccelerometer, SensorManager.SENSOR_DELAY_NORMAL);
@@ -73,17 +81,21 @@ public class SensorLogger implements SensorEventListener {
                 sensorLogInstance.addSensorLogEntry(currentSensorLogEntry);
             }
         };
+        logEntryTimer = new Timer();
         logEntryTimer.scheduleAtFixedRate(task, 0, 100);
+
+        // Register our instance of GoogleActivityRecognition class to recieve activity updates
+        googleActivityRecognition.registerForActivityTransitions();
 
         // Notify caller that we have begun
         sensorLogListener.sensorLoggingStarted();
     }
 
-    //TODO Stop
-    //TODO Maybe include an "onSensorLogStopped"
+    // Stop logging sensor information
     public void stopLogger(){
-        // Unregister from sensor events
+        // Unregister from sensor events and activity recognition
         mSensorManager.unregisterListener(this);
+        googleActivityRecognition.unregisterFromActivityTransitions();
 
         // Stop the timer
         logEntryTimer.cancel();
@@ -93,6 +105,11 @@ public class SensorLogger implements SensorEventListener {
         //TODO Log frequency domain if selected... Assume this will take some time...
 
         this.sensorLogListener.sensorLoggingEnded();
+    }
+
+
+    public void setPosture(Integer postureStanding) {
+
     }
 
     @Override
@@ -129,6 +146,11 @@ public class SensorLogger implements SensorEventListener {
     @Override
     public void onAccuracyChanged(Sensor sensor, int i) {
         //TODO Handle (?)
+    }
+
+    @Override
+    public void activityRecognized(Integer activityInteger) {
+
     }
 
     public interface SensorLogListenerInterface {
