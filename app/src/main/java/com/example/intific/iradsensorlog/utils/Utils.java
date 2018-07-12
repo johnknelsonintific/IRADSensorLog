@@ -1,7 +1,9 @@
 package com.example.intific.iradsensorlog.utils;
 
+import android.animation.Animator;
 import android.content.Context;
 import android.content.res.Resources;
+import android.view.View;
 
 import com.example.intific.iradsensorlog.R;
 import com.google.android.gms.location.DetectedActivity;
@@ -11,6 +13,9 @@ import com.google.android.gms.location.DetectedActivity;
  */
 
 public class Utils {
+
+    private static final int FADE_IN_ANIM_TIME = 200;
+    private static final int FADE_OUT_ANIM_TIME = 200;
 
     /**
      * Returns a human readable String corresponding to a detected activity type.
@@ -37,6 +42,42 @@ public class Utils {
             default:
                 return resources.getString(R.string.unidentifiable_activity, detectedActivityType);
         }
+    }
+
+    public static void fadeInView(final View view) {
+        view.animate().alpha(1f).setDuration(FADE_IN_ANIM_TIME).setListener(new Animator.AnimatorListener() {
+            @Override
+            public void onAnimationStart(Animator animation) {
+                view.setVisibility(View.VISIBLE);
+            }
+
+            @Override
+            public void onAnimationEnd(Animator animation) {}
+
+            @Override
+            public void onAnimationCancel(Animator animation) {}
+
+            @Override
+            public void onAnimationRepeat(Animator animation) { }
+        });
+    }
+
+    public static void fadeOutView(final View view) {
+        view.animate().alpha(0f).setDuration(FADE_OUT_ANIM_TIME).setListener(new Animator.AnimatorListener() {
+            @Override
+            public void onAnimationStart(Animator animation) {}
+
+            @Override
+            public void onAnimationCancel(Animator animation) {}
+
+            @Override
+            public void onAnimationRepeat(Animator animation) {}
+
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                view.setVisibility(View.GONE);
+            }
+        });
     }
 
 }

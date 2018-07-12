@@ -12,11 +12,13 @@ import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
 import com.example.intific.iradsensorlog.sensorlog.SensorLogger;
 import com.example.intific.iradsensorlog.sensorlog.SensorLoggerConfig;
+import com.example.intific.iradsensorlog.utils.Utils;
 
 import static com.example.intific.iradsensorlog.model.postures.POSTURE_CROUCHING;
 import static com.example.intific.iradsensorlog.model.postures.POSTURE_PRONE;
@@ -28,7 +30,6 @@ public class MainActivity extends AppCompatActivity implements SensorLogger.Sens
     private static final String TAG = "MainActivity";
     private static final int REQUEST_WRITE_EXTERNAL = 0;
 
-
     // sensor logger
     SensorLogger sensorLogger;
     Boolean currentlyLogging = false;
@@ -36,6 +37,7 @@ public class MainActivity extends AppCompatActivity implements SensorLogger.Sens
     // UI references
     Button logButton;
     RadioGroup postureRadiogroup;
+    ProgressBar progressLoggingBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,6 +53,7 @@ public class MainActivity extends AppCompatActivity implements SensorLogger.Sens
         // Natively bind members to UI elements
         logButton = findViewById(R.id.log_button);
         postureRadiogroup = findViewById(R.id.posture_radiogroup);
+        progressLoggingBar = findViewById(R.id.indeterminate_logging_bar);
 
         // Initialize the radio button and sensor logger
         postureRadiogroup.check(R.id.radio_standing);
@@ -63,9 +66,11 @@ public class MainActivity extends AppCompatActivity implements SensorLogger.Sens
                 if(currentlyLogging){
                     sensorLogger.stopLogger();
                     logButton.setText(getString(R.string.start_logging));
+                    hideLoadingIndicator();
                 } else {
                     sensorLogger.startLogger();
                     logButton.setText(R.string.stop_logging);
+                    showLoadingIndicator();
                 }
                 currentlyLogging = !currentlyLogging;// Turn logging on or off
             }
@@ -148,5 +153,13 @@ public class MainActivity extends AppCompatActivity implements SensorLogger.Sens
     @Override
     public void sensorLoggingEnded() {
         //TODO Update the UI as needed when the logging is done
+    }
+
+    private void showLoadingIndicator() {
+        Utils.fadeInView(progressLoggingBar);
+    }
+
+    private void hideLoadingIndicator() {
+        Utils.fadeOutView(progressLoggingBar);
     }
 }

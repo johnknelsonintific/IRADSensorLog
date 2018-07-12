@@ -86,7 +86,7 @@
         android:layout_marginBottom="16dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
-        app:layout_constraintBottom_toTopOf="@id/indeterminateLoggingBar"
+        app:layout_constraintBottom_toTopOf="@id/indeterminate_logging_bar"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         android:text="@string/start_logging"
@@ -94,13 +94,15 @@
 
 
     <ProgressBar
-        android:id="@+id/indeterminateLoggingBar"
+        android:id="@+id/indeterminate_logging_bar"
         style="@style/Widget.AppCompat.ProgressBar.Horizontal"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
+        android:layout_width="match_parent"
         android:layout_height="16dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        android:visibility="invisible"/>
 
 </android.support.constraint.ConstraintLayout>

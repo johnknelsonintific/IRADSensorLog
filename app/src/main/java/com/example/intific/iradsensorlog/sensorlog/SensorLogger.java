@@ -19,7 +19,7 @@ import java.util.TimerTask;
 
 public class SensorLogger implements SensorEventListener, GoogleActivityRecognition.GoogleActivityRecognizedListener {
     // Context
-    Context context;
+    private Context context;
 
     // Sensor API related objects
     private SensorManager mSensorManager;
@@ -29,7 +29,7 @@ public class SensorLogger implements SensorEventListener, GoogleActivityRecognit
     private Sensor gameRotationSensor;// The game rotation is more accurate than geomagnetic, and we don't care about "north"
 
     // Google acgtiviy recognition API class
-    GoogleActivityRecognition googleActivityRecognition;
+    private GoogleActivityRecognition googleActivityRecognition;
 
     // Logging tools
     private SensorLoggerConfig sensorLoggerParameters;
@@ -37,10 +37,10 @@ public class SensorLogger implements SensorEventListener, GoogleActivityRecognit
     private SensorLogEntry currentSensorLogEntry;
 
     // Csv writer
-    SensorLogCsvWriter sensorLogCsvWriter;
+    private SensorLogCsvWriter sensorLogCsvWriter;
 
     // Timer for appending new sensor data to logs
-    Timer logEntryTimer;
+    private Timer logEntryTimer;
 
     // Interface for handling logging events from caller
     private SensorLogListenerInterface sensorLogListener;
@@ -86,7 +86,8 @@ public class SensorLogger implements SensorEventListener, GoogleActivityRecognit
         TimerTask task = new TimerTask() {
             @Override
             public void run() {
-                sensorLogInstance.addSensorLogEntry(currentSensorLogEntry);
+                SensorLogEntry sensorLogEntryAddition = new SensorLogEntry(currentSensorLogEntry);
+                sensorLogInstance.addSensorLogEntry(sensorLogEntryAddition);
             }
         };
         logEntryTimer = new Timer();
