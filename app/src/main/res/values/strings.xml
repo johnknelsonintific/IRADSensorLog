@@ -25,4 +25,9 @@
     <string name="walking">Walking</string>
     <string name="unidentifiable_activity">Unidentifiable activity: %1$d</string>
 
+    <!-- Permissions -->
+    <string name="request_write_external_permissions_title">External storage</string>
+    <string name="request_write_external_permissions_content">IRADSensorLog writes sensor logs to a CSV file on the device. Please allow permission to write to external storage in order to log sensors.</string>
+
+
 </resources>

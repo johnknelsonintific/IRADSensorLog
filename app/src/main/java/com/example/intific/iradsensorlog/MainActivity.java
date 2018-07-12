@@ -1,6 +1,11 @@
 package com.example.intific.iradsensorlog;
 
+import android.Manifest;
+import android.app.AlertDialog;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
@@ -18,6 +23,11 @@ import static com.example.intific.iradsensorlog.model.postures.POSTURE_PRONE;
 import static com.example.intific.iradsensorlog.model.postures.POSTURE_STANDING;
 
 public class MainActivity extends AppCompatActivity implements SensorLogger.SensorLogListenerInterface {
+
+    // Static tags
+    private static final String TAG = "MainActivity";
+    private static final int REQUEST_WRITE_EXTERNAL = 0;
+
 
     // sensor logger
     SensorLogger sensorLogger;
@@ -60,6 +70,30 @@ public class MainActivity extends AppCompatActivity implements SensorLogger.Sens
                 currentlyLogging = !currentlyLogging;// Turn logging on or off
             }
         });
+
+        // Ask user for permission to log to external storage
+        // Ask for permissions to write to external storage for logs recording
+        if (ContextCompat.checkSelfPermission(this,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                != PackageManager.PERMISSION_GRANTED) {
+
+            // Permission is not granted. Should we show an explanation?
+            if (ActivityCompat.shouldShowRequestPermissionRationale(this,
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+                // If we should show an explanation, show explanation dialog then request permissions again
+                AlertDialog alertDialog = new AlertDialog.Builder(this).create();
+                alertDialog.setTitle(R.string.request_write_external_permissions_title);
+                alertDialog.setMessage(getResources().getString(R.string.request_write_external_permissions_content));
+                alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
+                        (dialog, which) -> {
+                            dialog.dismiss();
+                            ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_WRITE_EXTERNAL);
+                        });
+                alertDialog.show();
+            } else {
+                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_WRITE_EXTERNAL);
+            }
+        }
     }
 
     @Override

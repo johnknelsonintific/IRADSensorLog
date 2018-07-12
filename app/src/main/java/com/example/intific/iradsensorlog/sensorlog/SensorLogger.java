@@ -6,8 +6,10 @@ import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 
+import com.example.intific.iradsensorlog.csv.SensorLogCsvWriter;
 import com.example.intific.iradsensorlog.googleactivityrecognition.GoogleActivityRecognition;
 
+import java.io.IOException;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -34,6 +36,9 @@ public class SensorLogger implements SensorEventListener, GoogleActivityRecognit
     private SensorLogInstance sensorLogInstance;
     private SensorLogEntry currentSensorLogEntry;
 
+    // Csv writer
+    SensorLogCsvWriter sensorLogCsvWriter;
+
     // Timer for appending new sensor data to logs
     Timer logEntryTimer;
 
@@ -58,6 +63,9 @@ public class SensorLogger implements SensorEventListener, GoogleActivityRecognit
 
         // Initialize our Google activity recognition API
         this.googleActivityRecognition = new GoogleActivityRecognition(context, this);
+
+        // Initialize csv writer
+        this.sensorLogCsvWriter = new SensorLogCsvWriter(context);
 
         // Initialize the instance of sensor logs
         this.sensorLogInstance = new SensorLogInstance();
@@ -100,7 +108,13 @@ public class SensorLogger implements SensorEventListener, GoogleActivityRecognit
         // Stop the timer
         logEntryTimer.cancel();
 
-        //TODO Export to CSV and reinitialize data
+        // Export to CSV and reinitialize data
+        try {
+            sensorLogCsvWriter.exportSensorLogCsv(this.sensorLogInstance);
+        } catch (IOException e) {
+            //TODO Notify user of an error writing to the logs
+            e.printStackTrace();
+        }
 
         //TODO Log frequency domain if selected... Assume this will take some time...
 
